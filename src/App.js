@@ -4,21 +4,21 @@ import Axios from "axios";
 import logo from "./logo.JPG";
 
 function App() {
-  const [employee, setEmployee] = useState([]);
+  const [employees, setEmployees] = useState([]);
   const [count, setCount] = useState(1);
-  let config = {
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": true,
-    },
-  };
 
   useEffect(() => {
-    Axios.get(`/v1/account/employees?size=${count}`, console).then((resp) => {
+    let config = {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": true,
+      },
+    };
+    Axios.get(`/v1/account/employees?size=${count}`, config).then((resp) => {
       console.log(resp);
       if (resp.statusText === "OK") {
-        let data = [...employee, ...resp.data];
-        setEmployee(data);
+        let data = [...employees, ...resp.data];
+        setEmployees(data);
       }
     });
   }, [count]);
@@ -35,42 +35,43 @@ function App() {
           >
             Employee Details
           </div>
-          {employee.map((e) => (
-            <div className="container">
+          {employees.map((employee, i) => (
+            <div className="container" key={i}>
               <div className="flex-item">
                 <div>
-                  <span className="bold">Id:</span> <span>{e.id}</span>
+                  <span className="bold">Id:</span> <span>{employee.id}</span>
                 </div>
                 <div>
                   <span className="bold">First Name:</span>{" "}
-                  <span>{e.employee.firstName}</span>
+                  <span>{employee.employee.firstName}</span>
                 </div>
                 <div>
                   <span className="bold">Last Name:</span>{" "}
-                  <span>{e.employee.lastName}</span>
+                  <span>{employee.employee.lastName}</span>
                 </div>
               </div>
               <div className="flex-item">
                 <div>
-                  <span className="bold">Age:</span> <span>{e.age}</span>
+                  <span className="bold">Age:</span> <span>{employee.age}</span>
                 </div>
                 <div>
                   <span className="bold">Joining Date:</span>{" "}
-                  <span>{e.dateOfJoining}</span>
+                  <span>{employee.dateOfJoining}</span>
                 </div>
                 <div>
                   <span className="bold">Dept:</span>{" "}
-                  <span>{e.department}</span>
+                  <span>{employee.department}</span>
                 </div>
                 <div>
-                  <span className="bold">Salary:</span> <span>{e.salary}</span>
+                  <span className="bold">Salary:</span>{" "}
+                  <span>{employee.salary}</span>
                 </div>
               </div>
               <div className="flex-item">
                 <div>
                   <span className="bold">Projects:</span>{" "}
                   <span>
-                    {e.employee.projects.map((p) => p.name).join(", ")}
+                    {employee.employee.projects.map((p) => p.name).join(", ")}
                   </span>
                 </div>
               </div>
